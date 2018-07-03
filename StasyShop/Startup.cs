@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Cors;
 
 namespace StasyShop
 {
@@ -17,12 +18,7 @@ namespace StasyShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-               builder.AllowAnyOrigin()
-                      .AllowAnyMethod()
-                      .AllowAnyHeader();
-            }));
+            services.AddCors();
             services.AddMvc();
         }
 
@@ -32,6 +28,7 @@ namespace StasyShop
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors(options => options.WithOrigins("http://localhost:3000/").AllowAnyOrigin());
             }
 
             app.UseMvc();
